@@ -70,3 +70,18 @@
 - `combine -M ProfileLikelihood --expectSignal 1 --significance -t -1 dataCard_full_analysis_anv1_v14_bkg_ws.txt`
 ### Limits
 - `combine -M Asymptotic -t -1 --run expected dataCard_full_analysis_anv1_v14_bkg_ws.txt`
+
+
+### Significance
+# step 1
+`combine -M HybridNew --frequentist datacards_cic2/datacard_300_grav_02_1500.txt --significance --saveToys --fullBToys --saveHybridResult -T 20 -s $(date +%s) --expectSignal 0.0418711 -n _grid_sig_1_`
+# step 2
+`combine -M HybridNew --frequentist datacards_cic2/datacard_300_grav_02_1500.txt --readHybridResult --toysFile res_hybridSignificance.root --significance`
+
+### Upper limits
+# step 1
+`combine -M HybridNew --frequentist datacards_cic2/datacard_300_grav_02_1500.txt --testStat LHC -H ProfileLikelihood --fork 4 -T 50 -v 4 --seed $(date +%s) --saveToys --saveHybridResult -n _grid_limit_1_ --clsAcc 0`
+# step 2
+`combine datacards_cic2/datacard_300_grav_02_1500.txt -M HybridNew --frequentist --grid res_hybridLimit.root  --expectedFromGrid 0.5`
+
+
