@@ -494,30 +494,9 @@ class BiasApp(CombineApp):
                     gminim.migrad()
 
                     if options.plot_toys_fits:
-                        if options.plot_binning:
-                            dset.plotOn(frame,ROOT.RooFit.Binning(options.plot_binning),ROOT.RooFit.DataError(ROOT.RooAbsData.Poisson))
-                        else:
-                            dset.plotOn(frame,ROOT.RooFit.DataError(ROOT.RooAbsData.Poisson))
-                        if options.plot_fit_bands:
-                            pdf.plotOn(frame,ROOT.RooFit.Invisible())
-                        else:
-                            pdf.plotOn(frame,ROOT.RooFit.LineColor(ROOT.kBlue))
-                                                    
-                        if toy > 0:
-                            generator.plotOn(frame,ROOT.RooFit.LineColor(ROOT.kGreen))
-                            
-                        if options.plot_fit_bands:
-                            slabel = "%s_%s_%1.0f_%1.0f" % ( cat, model, options.fit_range[0], options.fit_range[1] )
-                            self.plotFitBands(options,frame,dset,pdf,roobs,frame.getObject(1),options.plot_binning,slabel)
-                            pdf.plotOn(frame,ROOT.RooFit.LineColor(ROOT.kBlue))
+                        slabel = "%s_%s_%1.0f_%1.0f" % ( cat, model, options.fit_range[0], options.fit_range[1] )
+                        self.plotBkgFit(options,dset,pdf,roobs,toyname,slabel,bias_funcs=options.bias_param)
 
-
-                        frame.GetYaxis().SetRangeUser(1e-5,1e+3)
-                        canv = ROOT.TCanvas("fit_%s" % toyname,"fit_%s" % toyname)
-                        canv.SetLogy()
-                        canv.SetLogx()
-                        frame.Draw()
-                        self.keep( canv )
 
                     for test in testRanges:
                         if options.verbose:
